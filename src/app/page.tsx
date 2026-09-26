@@ -1,20 +1,32 @@
 import { getMenuRepository } from "@/data/get-menu-repository";
+import { MenuBrowser } from "@/features/menu";
+import { PromoCarousel } from "@/features/promotions";
+import { RestaurantHeader, buildRestaurantJsonLd, serializeJsonLd } from "@/features/restaurant";
+import { SiteFooter } from "./_components/site-footer";
+import { TopBar } from "./_components/top-bar";
+import { UrlSheets } from "./_components/url-sheets";
+
+/** Modo seed: estático. Modo supabase: regenera no máximo a cada hora (parte 2 revalida ao salvar). */
+export const revalidate = 3600;
 
 export default async function MenuPage() {
   const menu = await getMenuRepository().getMenu();
   return (
-    <main className="mx-auto max-w-xl px-5 py-8">
-      <p className="text-[11px] font-bold tracking-[0.22em] text-accent uppercase">
-        {menu.restaurant.tagline}
-      </p>
-      <h1 className="mt-2 font-display text-4xl font-semibold text-brand">{menu.restaurant.name}</h1>
-      <ul className="mt-6 space-y-2">
-        {menu.categories.map((c) => (
-          <li key={c.slug} className="font-display text-xl">
-            {c.name}
-          </li>
-        ))}
-      </ul>
-    </main>
+    <>
+      <TopBar restaurantName={menu.restaurant.name} />
+      <main className="mx-auto max-w-xl pb-6">
+        <RestaurantHeader restaurant={menu.restaurant} openingHours={menu.openingHours} />
+        <PromoCarousel promotions={menu.promotions} />
+        <MenuBrowser categories={menu.categories} />
+        <SiteFooter restaurant={menu.restaurant} />
+      </main>
+      <UrlSheets menu={menu} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(buildRestaurantJsonLd(menu, process.env.SITE_URL)),
+        }}
+      />
+    </>
   );
 }

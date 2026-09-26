@@ -39,7 +39,7 @@ export function MenuSearch({
             type="search"
             aria-label="Buscar no cardápio"
             placeholder="Ex.: parmegiana, chopp, batata…"
-            autoFocus
+            data-autofocus
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
             className="h-12 w-full bg-transparent text-[16px] outline-none placeholder:text-ink-muted"

@@ -37,3 +37,4 @@ Thumbs.db
 /build
 *.pem
 npm-debug.log*
+.playwright-mcp/

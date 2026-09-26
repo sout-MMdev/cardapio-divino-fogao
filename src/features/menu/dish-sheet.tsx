@@ -21,7 +21,7 @@ export function DishSheet({ dish, open, onClose, prepTimeMinutes }: Props) {
       <DishPhoto
         photo={dish.photo}
         sizes="(max-width: 576px) 100vw, 576px"
-        preload
+        eager
         className="h-[230px] w-full"
       />
       <div className={`px-5 pb-10 ${dish.photo ? "pt-5" : "pt-12"}`}>

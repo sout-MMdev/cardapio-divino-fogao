@@ -21,6 +21,10 @@ html:has(dialog[open]) {
   }
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }

@@ -30,12 +30,14 @@ export function FeaturedSection({
               onClick={() => onOpen(dish.slug)}
               className="relative block h-[220px] w-full overflow-hidden rounded-[22px] bg-brand text-left"
             >
-              <DishPhoto
-                photo={dish.photo}
-                sizes="(max-width: 480px) 80vw, 300px"
-                preload={index === 0}
-                className="absolute inset-0"
-              />
+              <span className="absolute inset-0">
+                <DishPhoto
+                  photo={dish.photo}
+                  sizes="(max-width: 480px) 80vw, 300px"
+                  eager={index === 0}
+                  className="size-full"
+                />
+              </span>
               <span
                 aria-hidden="true"
                 className="absolute inset-0 bg-gradient-to-b from-transparent from-30% to-[rgb(40_10_8/0.85)]"

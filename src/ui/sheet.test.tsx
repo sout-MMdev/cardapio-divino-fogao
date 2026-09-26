@@ -16,6 +16,16 @@ describe("Sheet", () => {
     expect(screen.getByRole("dialog", { name: "Batatão Divino" })).toHaveAttribute("open");
   });
 
+  it("ao abrir, foca o elemento marcado com data-autofocus (ex.: campo de busca)", () => {
+    render(
+      <Sheet open onClose={() => {}} labelledBy="t">
+        <h2 id="t">Buscar</h2>
+        <input aria-label="Buscar no cardápio" data-autofocus />
+      </Sheet>,
+    );
+    expect(screen.getByLabelText("Buscar no cardápio")).toHaveFocus();
+  });
+
   it("fica fechado quando open=false", () => {
     renderSheet(false);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
