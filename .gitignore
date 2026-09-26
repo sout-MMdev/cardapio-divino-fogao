@@ -1,0 +1,34 @@
+# dependências
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# build / cobertura / testes
+dist/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# PWA gerado
+public/sw.js
+public/sw.js.map
+public/swe-worker-*.js
+
+# ambiente
+.env*.local
+.env
+
+# fotos de desenvolvimento (Google Maps, terceiros) — não versionar
+public/menu-photos/*
+!public/menu-photos/.gitkeep
+
+# ferramentas
+.superpowers/
+.vercel/
+.DS_Store
+Thumbs.db
