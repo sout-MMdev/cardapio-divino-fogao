@@ -30,10 +30,10 @@ O cardápio será **usado de verdade pela unidade**. Por isso a arquitetura já 
 
 ### 1.2 Critérios de sucesso
 
-1. `pnpm dev` + Mobile Viewer (`localhost:3000`, preset iPhone 12 Pro) mostram o **cardápio real completo** (cerca de 60 itens, apêndice A) no tema A.
+1. `npm run dev` + Mobile Viewer (`localhost:3000`, preset iPhone 12 Pro) mostram o **cardápio real completo** (cerca de 60 itens, apêndice A) no tema A.
 2. As 11 funcionalidades da seção 3 funcionam no celular.
 3. Toda a bateria de testes da seção 9 passa: unidade, componentes, ponta a ponta e acessibilidade.
-4. No Lighthouse mobile, rodando `pnpm build && pnpm start`: **Desempenho ≥ 90**, **Acessibilidade = 100**, app instalável (PWA).
+4. No Lighthouse mobile, rodando `npm run build && npm start`: **Desempenho ≥ 90**, **Acessibilidade = 100**, app instalável (PWA).
 5. O modo `MENU_SOURCE=supabase` **compila e passa nos testes de contrato com dados de exemplo**, mas **nunca é executado contra um Supabase remoto**.
 6. Nada é publicado: nem deploy, nem migration aplicada, nem carga de dados no Supabase.
 
@@ -41,17 +41,17 @@ O cardápio será **usado de verdade pela unidade**. Por isso a arquitetura já 
 
 ## 2. Stack
 
-| Camada | Escolha | Versão de referência (npm, 2026-09) |
+| Camada | Escolha | Versão (instalada pelo create-next-app 16.3.6 ou a mais recente, 2026-09) |
 |---|---|---|
-| Framework | Next.js (App Router) + React | 16.3 / 19.3 |
-| Linguagem | TypeScript, modo `strict` | 7.0 |
+| Framework | Next.js (App Router, Turbopack) + React | 16.3 / 19.2 |
+| Linguagem | TypeScript, modo `strict` | 5.x (a do template) |
 | Estilo | Tailwind CSS, com tokens em CSS | 4.3 |
 | Validação | Zod | 4.6 |
 | Banco (preparado, sem uso na v1) | Supabase: Postgres + Storage + `@supabase/supabase-js` | 2.117 |
-| PWA | Serwist (`@serwist/next`) | 9.5 |
+| PWA | Serwist (`@serwist/turbopack`, compatível com o Turbopack do Next 16) | 9.5 |
 | Testes | Vitest + Testing Library, Playwright + `@axe-core/playwright` | 5.0 / 1.63 |
-| Qualidade | ESLint (flat config) + Prettier | 10.x |
-| Gerenciador de pacotes | pnpm (via corepack do Node 24) | — |
+| Qualidade | ESLint (flat config, `eslint-config-next`) + Prettier | 9.x (a do template) |
+| Gerenciador de pacotes | npm (já vem com o Node 24; o pnpm não está instalado na máquina) | 11 |
 
 Não entram: biblioteca de animação (usamos CSS), gerenciador de estado global (o estado é local ou fica no endereço da página) e ORM (o acesso passa por um único repositório).
 
@@ -91,7 +91,9 @@ app_bar/
 │  │  ├─ page.tsx                 # o cardápio ("/"), gerado de forma estática
 │  │  ├─ error.tsx, not-found.tsx
 │  │  ├─ manifest.ts              # manifest do PWA
-│  │  └─ sw.ts                    # service worker (Serwist)
+│  │  ├─ sw.ts                    # service worker (Serwist)
+│  │  ├─ serwist/[path]/route.ts  # entrega o /serwist/sw.js (Serwist Turbopack)
+│  │  └─ ~offline/page.tsx        # página de reserva quando não há rede nem cache
 │  ├─ features/
 │  │  ├─ menu/                    # CategoryNav, CategorySection, DishRow, CompactRow,
 │  │  │  │                        # DishSheet, MenuSearch
@@ -136,7 +138,7 @@ Essas regras são garantidas pelo ESLint com `no-restricted-imports` ou `eslint-
 
 - `page.tsx` é um Server Component. Ele chama `getMenuRepository().getMenu()` e entrega o `Menu` já validado às features.
 - **Modo `seed` (padrão da v1):** a página é gerada de forma totalmente estática no build.
-- **Modo `supabase` (preparado):** a leitura fica em cache com a tag `menu` e expira em até 1 hora. Na parte 2, salvar no painel revalida a tag e a página se atualiza na hora.
+- **Modo `supabase` (preparado):** a página usa `export const revalidate = 3600`, ou seja, é gerada de novo a cada hora no máximo. Na parte 2, salvar no painel chama `revalidatePath('/')` e a página se atualiza na hora. O `cacheComponents` não é ligado na v1.
 - **O "aberto ou fechado agora" é calculado no cliente.** Enquanto isso não acontece, aparece um espaço reservado neutro, para não haver diferença entre o que veio do servidor e o que o navegador renderiza. O cálculo usa `restaurant.timezone` (`America/Sao_Paulo`), nunca o fuso do aparelho.
 - **Painéis com endereço próprio:** `?prato=<slug>` abre o detalhe e `?info` abre as informações. **O parâmetro é lido no cliente** (`useSearchParams` dentro de `Suspense`), para a página continuar estática. Abrir um painel acrescenta uma entrada ao histórico, então o "voltar" do celular o fecha. Um slug que não existe é ignorado.
 - A busca acontece no cliente, sobre os itens já carregados, e seu estado é local. Ela se fecha pelo ✕ ou pela tecla Esc.
@@ -277,7 +279,7 @@ promotions
   - Fecha arrastando para baixo, no ✕, com Esc ou com o "voltar".
 - **Informações (tela 3):** um `Sheet` com o status, os horários da semana (hoje em negrito bordô), o endereço + botão "Abrir no Google Maps", os chips de pagamento com os avisos e o bloco "Bom saber".
 - **Busca:** a barra se transforma num campo de busca e os resultados aparecem em `DishRow`. Se nada for encontrado: "Nada encontrado para "x"" e atalhos para as categorias.
-- **`DishPhoto`:** usa `next/image` com borrão enquanto carrega. **Se a foto faltar ou der erro, o layout sem foto é usado.**
+- **`DishPhoto`:** usa `next/image`, com a cor `surface-muted` enquanto carrega e um fade-in quando termina. **Se a foto faltar ou der erro, o layout sem foto é usado.**
 
 ### 7.3 Estados
 
@@ -304,11 +306,11 @@ promotions
   - `name` "Divino Fogão · Cardápio", `short_name` "Divino Fogão"
   - `theme_color` `#6B1D22`, `background_color` `#F4EEE4`, `display` `standalone`
   - Ícones de 192 e 512 px, mais a versão *maskable*, com o monograma "DF" em creme sobre bordô
-- **Service worker (Serwist):**
-  - O esqueleto do app e a página inicial ficam guardados antecipadamente (precache).
-  - Navegação: tenta a rede primeiro e, sem rede, usa a cópia salva.
-  - Imagens: usa a cópia salva primeiro, com limite de entradas e de tempo.
-  - **Desligado em `pnpm dev`.**
+- **Service worker (Serwist Turbopack):**
+  - Usa o `defaultCache` do Serwist: a navegação tenta a rede primeiro e, sem rede, usa a cópia salva; imagens e arquivos estáticos ficam em cache com limites.
+  - Tem a página de reserva `/~offline`.
+  - A página visitada fica salva (`cacheOnNavigation`).
+  - **Desligado em `npm run dev`** (`SerwistProvider disable`).
 - **SEO:**
   - `title` "Cardápio · Divino Fogão São Leopoldo", `description`, imagem Open Graph.
   - **JSON-LD** `Restaurant` com `hasMenu` → `Menu`/`MenuSection`/`MenuItem`/`Offer`, gerado a partir do `Menu`, para o Google conseguir ler o cardápio.
@@ -331,7 +333,7 @@ promotions
 **Qualidade:**
 - TypeScript `strict` com `noUncheckedIndexedAccess`.
 - ESLint com as regras da seção 4.2, e Prettier.
-- Scripts `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm build`.
+- Scripts `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run build`.
 - `.github/workflows/ci.yml` roda todos eles.
 - Mensagens de commit no padrão Conventional Commits.
 
@@ -343,7 +345,7 @@ promotions
   - `MENU_SOURCE` (padrão `seed`).
   - `SUPABASE_URL` e `SUPABASE_ANON_KEY`, exigidas só quando `MENU_SOURCE=supabase`.
   - Existe um `.env.example` com essas variáveis. O `.env*.local` fica fora do git.
-- **Mobile Viewer:** `pnpm dev` → `localhost:3000`, preset iPhone 12 Pro (390×844). Para testar o PWA: `pnpm build && pnpm start`.
+- **Mobile Viewer:** `npm run dev` → `localhost:3000`, preset iPhone 12 Pro (390×844). Para testar o PWA: `npm run build && npm start`.
 - **Git:**
   - Repositório próprio em `app_bar/`, branch `main`, identidade local `Maxx <216940663+sout-MMdev@users.noreply.github.com>`.
   - `.gitignore` inclui `.superpowers/`, `node_modules/`, `.next/`, `.env*.local` e `public/menu-photos/*`, mantendo o `.gitkeep`.
