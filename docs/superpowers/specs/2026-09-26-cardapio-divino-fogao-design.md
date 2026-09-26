@@ -140,7 +140,7 @@ Essas regras são garantidas pelo ESLint com `no-restricted-imports` ou `eslint-
 - **Modo `seed` (padrão da v1):** a página é gerada de forma totalmente estática no build.
 - **Modo `supabase` (preparado):** a página usa `export const revalidate = 3600`, ou seja, é gerada de novo a cada hora no máximo. Na parte 2, salvar no painel chama `revalidatePath('/')` e a página se atualiza na hora. O `cacheComponents` não é ligado na v1.
 - **O "aberto ou fechado agora" é calculado no cliente.** Enquanto isso não acontece, aparece um espaço reservado neutro, para não haver diferença entre o que veio do servidor e o que o navegador renderiza. O cálculo usa `restaurant.timezone` (`America/Sao_Paulo`), nunca o fuso do aparelho.
-- **Painéis com endereço próprio:** `?prato=<slug>` abre o detalhe e `?info` abre as informações. **O parâmetro é lido no cliente** (`useSearchParams` dentro de `Suspense`), para a página continuar estática. Abrir um painel acrescenta uma entrada ao histórico, então o "voltar" do celular o fecha. Um slug que não existe é ignorado.
+- **Painéis com endereço próprio:** `?prato=<slug>` abre o detalhe e `?info` abre as informações. **O parâmetro é lido no cliente** (`useSyncExternalStore` sobre `window.location`, com `history.pushState`/`replaceState`, que o Next 16 sincroniza com o roteador), para a página continuar estática. `?busca=<texto>` abre a busca. Abrir um painel acrescenta uma entrada ao histórico, então o "voltar" do celular o fecha; quem chegou por link direto fecha o painel sem sair do site. Um slug que não existe é ignorado.
 - A busca acontece no cliente, sobre os itens já carregados, e seu estado é local. Ela se fecha pelo ✕ ou pela tecla Esc.
 
 ### 4.4 Contrato do repositório
@@ -155,7 +155,7 @@ Um único método, porque a tela do cliente precisa de tudo de uma vez. A parte 
 
 `getMenuRepository()` lê `MENU_SOURCE` de `lib/env.ts`, que aceita `seed` ou `supabase` e usa **`seed` como padrão**:
 - **`seed`:** devolve os dados de `data/seed/menu.ts`.
-- **`supabase`:** exige `SUPABASE_URL` e `SUPABASE_ANON_KEY`, faz **uma única consulta** com os relacionamentos embutidos, valida o resultado com Zod e converte para os tipos do `domain`.
+- **`supabase`:** exige `SUPABASE_URL` e `SUPABASE_ANON_KEY`, faz **uma ida ao banco** (4 consultas em paralelo: restaurante, horários, categorias com pratos, variações e adicionais embutidos, e promoções), valida o resultado com Zod e converte para os tipos do `domain`.
 
 ---
 
@@ -192,7 +192,7 @@ interface Menu {
 ```
 
 **Regras garantidas pela validação Zod e pelos testes dos dados iniciais:**
-- Todo prato tem `basePrice` ou pelo menos uma variação.
+- Um prato sem `basePrice` e sem variações aparece como **"Consulte o preço"**. No seed, isso só é permitido para os slugs listados em `PENDING_PRICE_SLUGS`, e um teste garante isso.
 - Os slugs são únicos dentro de cada tipo de entidade.
 - Todo preço é maior que zero.
 - `closesAt` pode ser menor que `opensAt`, e nesse caso a faixa passa da meia-noite.
@@ -287,7 +287,7 @@ promotions
 |---|---|
 | Loja fechada | "Fechado · abre <dia> às <hora>". O cardápio continua navegável |
 | Offline | O cardápio salvo no celular, com o aviso discreto "Você está offline, mostrando o cardápio salvo" |
-| Esgotado | Linha em escala de cinza com 45% de opacidade e o selo "Esgotado hoje". O detalhe abre, e o preço fica acinzentado |
+| Esgotado | Texto em `ink-muted`, preço riscado, foto em escala de cinza e o selo "Esgotado hoje". O texto não usa `opacity`, para manter o contraste AA. O detalhe continua abrindo |
 | Sem foto | Layout só com texto, sem espaço vazio |
 | Erro de renderização | `error.tsx`: "Não foi possível carregar o cardápio" + "Tentar novamente" |
 | Rota inexistente | `not-found.tsx` com um link de volta ao cardápio |
