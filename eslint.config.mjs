@@ -39,6 +39,20 @@ export default defineConfig([
         group: ["@/features/*/**"],
         message: "Importe outra feature só pelo index (ex.: @/features/menu).",
       },
+      {
+        group: ["@/domain/schema"],
+        message: "Schemas Zod ficam no servidor (data/); no cliente trariam o Zod para o bundle.",
+      },
+    ]),
+  },
+  {
+    files: ["src/ui/**/*.{ts,tsx}", "src/lib/**/*.{ts,tsx}", "src/app/_components/**/*.{ts,tsx}"],
+    ignores: ["src/lib/env.ts"], // env.ts só roda no servidor (usado por data/)
+    rules: restrict([
+      {
+        group: ["@/domain/schema", "zod"],
+        message: "Schemas Zod ficam no servidor (data/); no cliente trariam o Zod para o bundle.",
+      },
     ]),
   },
   {

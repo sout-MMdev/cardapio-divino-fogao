@@ -1,8 +1,6 @@
-import { z } from "zod";
+import type { Cents } from "./schema";
 
-/** Valor monetário em centavos inteiros (8990 = R$ 89,90). */
-export const centsSchema = z.number().int().positive().brand<"Cents">();
-export type Cents = z.infer<typeof centsSchema>;
+export type { Cents };
 
 export function cents(value: number): Cents {
   if (!Number.isInteger(value)) throw new Error(`Centavos precisam ser inteiros: ${value}`);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { menuSchema } from "@/domain/menu";
+import { menuSchema } from "@/domain/schema";
 import type { MenuRepository } from "./menu-repository";
 
 /** Bateria compartilhada: toda implementação de MenuRepository precisa passar. */

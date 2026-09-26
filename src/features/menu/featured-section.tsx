@@ -53,7 +53,7 @@ export function FeaturedSection({
                       {b.label}
                     </span>
                   ))}
-                <span className="block font-display text-[24px] leading-tight italic">
+                <span className="block font-display-italic text-[24px] leading-tight italic">
                   {dish.name}
                 </span>
                 <span className="mt-0.5 block text-[13px] font-semibold">{inlinePrice(dish)}</span>

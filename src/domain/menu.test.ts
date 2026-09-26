@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { makeCategory, makeDish, makeMenu } from "@/test/fixtures";
 import { cents } from "./money";
-import { countDishes, featuredDishes, findDish, menuSchema, priceSummary } from "./menu";
+import { countDishes, featuredDishes, findDish, priceSummary } from "./menu";
+import { menuSchema } from "./schema";
 
 describe("menuSchema", () => {
   it("aceita um cardápio válido", () => {

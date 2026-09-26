@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { countDishes, featuredDishes, findDish, menuSchema, priceSummary } from "@/domain/menu";
+import { countDishes, featuredDishes, findDish, priceSummary } from "@/domain/menu";
+import { menuSchema } from "@/domain/schema";
 import { PENDING_PRICE_SLUGS, seedMenu } from "./menu";
 
 describe("seedMenu (cardápio impresso transcrito)", () => {

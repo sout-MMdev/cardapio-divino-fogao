@@ -4,12 +4,14 @@ import { Fraunces, Manrope } from "next/font/google";
 import { OfflineBanner } from "./_components/offline-banner";
 import "./globals.css";
 
-const fraunces = Fraunces({
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
+// itálico só nos títulos de destaques/promoções: carrega sem preload para não disputar banda com a foto LCP
+const frauncesItalic = Fraunces({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  style: ["normal", "italic"],
-  axes: ["opsz"],
+  variable: "--font-fraunces-italic",
+  style: "italic",
   display: "swap",
+  preload: false,
 });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 
@@ -42,7 +44,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${fraunces.variable} ${manrope.variable}`}>
+    <html lang="pt-BR" className={`${fraunces.variable} ${frauncesItalic.variable} ${manrope.variable}`}>
       <body className="min-h-dvh bg-bg font-sans text-ink antialiased">
         <SerwistProvider
           swUrl="/serwist/sw.js"

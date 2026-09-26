@@ -18,7 +18,7 @@ export function PromoCarousel({ promotions }: { promotions: Promotion[] }) {
               <p className="text-[10.5px] font-bold tracking-[0.18em] uppercase opacity-90">
                 Promoção
               </p>
-              <p className="mt-1 font-display text-[19px] leading-tight italic">{promo.title}</p>
+              <p className="mt-1 font-display-italic text-[19px] leading-tight italic">{promo.title}</p>
               {promo.description ? (
                 <p className="mt-1 text-[12.5px] leading-snug opacity-95">{promo.description}</p>
               ) : null}

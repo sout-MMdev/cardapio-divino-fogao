@@ -22,7 +22,8 @@ export function DishPhoto({ photo, sizes, className = "", eager = false }: Props
         fetchPriority={eager ? "high" : "auto"}
         onLoad={() => setLoaded(true)}
         onError={() => setFailed(true)}
-        className={`object-cover transition-opacity duration-500 motion-reduce:transition-none ${loaded ? "opacity-100" : "opacity-0"}`}
+        // eager = acima da dobra: nasce visível para não atrasar o LCP até a hidratação
+        className={`object-cover transition-opacity duration-500 motion-reduce:transition-none ${eager || loaded ? "opacity-100" : "opacity-0"}`}
       />
     </div>
   );

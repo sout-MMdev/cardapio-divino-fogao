@@ -1,4 +1,5 @@
-import { menuSchema, type Menu } from "@/domain/menu";
+import type { Menu } from "@/domain/menu";
+import { menuSchema } from "@/domain/schema";
 import { menuRowsSchema } from "./rows";
 
 export type PhotoUrl = (path: string) => string;
