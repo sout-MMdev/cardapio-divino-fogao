@@ -17,7 +17,7 @@
 
 - ⛔ **Nunca** executar `supabase link`, `supabase db push`, SQL remoto, carga de dados remota, MCP do Supabase nem deploy. Tudo do Supabase existe **só como arquivo**.
 - Commits como `Maxx <216940663+sout-MMdev@users.noreply.github.com>` (config local do repo). Nunca usar a identidade da empresa. Não criar remoto no GitHub.
-- Gerenciador de pacotes: **npm**. Rodar do diretório `C:\Users\maxue\OneDrive\Desktop\app_bar`.
+- Gerenciador de pacotes: **npm**. Rodar do diretório `<pasta do projeto>`.
 - Textos da tela em pt-BR. Nomes de código e de banco em inglês, `snake_case` no banco.
 - `MENU_SOURCE` tem `seed` como padrão. O app roda sem nenhuma variável de ambiente.
 - Tema A, com os tokens exatos da seção 7.1 da especificação. Áreas de toque de pelo menos 44 px e contraste AA (sem `opacity` em texto).
@@ -49,10 +49,10 @@
 - [ ] **Passo 1: gerar a base num diretório temporário e copiar**
 
 ```bash
-SCR="C:/Users/maxue/AppData/Local/Temp/claude/c--Users-maxue-OneDrive-Desktop-app-bar/16b5a2a4-3137-450b-bfc0-3c8805bb9c03/scratchpad"
+SCR="<pasta temporária>"
 rm -rf "$SCR/scaffold" && npx --yes create-next-app@16.3.6 "$SCR/scaffold" --ts --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm --skip-install --disable-git --yes
-cd "$SCR/scaffold" && rm -f .gitignore README.md public/*.svg && cp -r . "C:/Users/maxue/OneDrive/Desktop/app_bar/"
-cd "C:/Users/maxue/OneDrive/Desktop/app_bar" && npm install
+cd "$SCR/scaffold" && rm -f .gitignore README.md public/*.svg && cp -r . "<pasta do projeto>/"
+cd "<pasta do projeto>" && npm install
 ```
 
 - [ ] **Passo 2: instalar dependências**
@@ -1126,7 +1126,7 @@ export const seedMenu: Menu = {
 - [ ] **Passo 4: copiar as fotos de desenvolvimento, que ficam fora do git**
 
 ```bash
-SCR="C:/Users/maxue/AppData/Local/Temp/claude/c--Users-maxue-OneDrive-Desktop-app-bar/16b5a2a4-3137-450b-bfc0-3c8805bb9c03/scratchpad/maps"
+SCR="<pasta temporária>/maps"
 mkdir -p public/menu-photos && touch public/menu-photos/.gitkeep
 cp "$SCR/p04.jpg" public/menu-photos/batatao.jpg && cp "$SCR/p03.jpg" public/menu-photos/batata-com-calabresa.jpg
 git check-ignore public/menu-photos/batatao.jpg   # deve imprimir o caminho (ignorado)
