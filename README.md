@@ -65,7 +65,7 @@ src/
 
 ## Qualidade (medida em 26/09/2026)
 
-- **96 testes** de unidade e de componentes, e **24 testes ponta a ponta** (12 cenários × 2 aparelhos), incluindo offline e axe.
+- **101 testes** de unidade e de componentes, e **24 testes ponta a ponta** (12 cenários × 2 aparelhos), incluindo offline e axe. Sem as fotos de desenvolvimento, como num clone novo ou no CI, o teste das fotos é pulado e o resto passa.
 - **Lighthouse mobile** (build de produção):
   - Desempenho **92–93**
   - Acessibilidade **100**
