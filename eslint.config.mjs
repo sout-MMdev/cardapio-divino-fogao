@@ -50,6 +50,7 @@ export default defineConfig([
       },
     ]),
   },
+  { files: ["src/**/*.test.{ts,tsx}", "src/test/**"], rules: { "no-restricted-imports": "off" } },
   globalIgnores([
     ".next/**",
     "out/**",
