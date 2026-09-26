@@ -1,5 +1,7 @@
+import { SerwistProvider } from "@serwist/turbopack/react";
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Manrope } from "next/font/google";
+import { OfflineBanner } from "./_components/offline-banner";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -41,7 +43,17 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${fraunces.variable} ${manrope.variable}`}>
-      <body className="min-h-dvh bg-bg font-sans text-ink antialiased">{children}</body>
+      <body className="min-h-dvh bg-bg font-sans text-ink antialiased">
+        <SerwistProvider
+          swUrl="/serwist/sw.js"
+          disable={process.env.NODE_ENV === "development"}
+          cacheOnNavigation
+          reloadOnOnline={false}
+        >
+          {children}
+          <OfflineBanner />
+        </SerwistProvider>
+      </body>
     </html>
   );
 }

@@ -4,7 +4,11 @@ export function PromoCarousel({ promotions }: { promotions: Promotion[] }) {
   if (promotions.length === 0) return null;
   return (
     <section aria-label="Promoções" className="pb-2">
-      <ul className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1">
+      {/* tabIndex: a lista rola na horizontal e não tem itens focáveis — teclado precisa alcançá-la */}
+      <ul
+        tabIndex={0}
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
         {promotions.map((promo) => (
           <li
             key={promo.slug}
