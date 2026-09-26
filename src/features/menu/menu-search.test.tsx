@@ -32,7 +32,7 @@ describe("MenuSearch", () => {
 
   it("sem resultado, oferece atalhos para as categorias", async () => {
     const { onPickCategory } = setup("xyz");
-    expect(screen.getByText("Nada encontrado para “xyz”")).toBeInTheDocument();
+    expect(screen.getByText("Nada encontrado para “xyz”").closest("[aria-live]")).not.toBeNull();
     await userEvent.click(screen.getByRole("button", { name: "Parmegianas" }));
     expect(onPickCategory).toHaveBeenCalledWith("parmegianas");
   });

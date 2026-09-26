@@ -200,7 +200,7 @@ interface Menu {
 
 Só ficam no `Menu` itens com `is_visible = true` e promoções com `is_active = true`. **Esse filtro acontece no repositório**, nunca na tela.
 
-A seção "Destaques", no topo, **é montada a partir dos pratos com `isFeatured`**. Ela não é uma categoria no banco.
+A seção "Destaques", no topo, **é montada a partir dos pratos com `isFeatured` que estão disponíveis**. Um prato esgotado não é destacado; ele continua acinzentado na sua categoria. Ela não é uma categoria no banco.
 
 ---
 

@@ -46,8 +46,9 @@ export function MenuSearch({
           />
         </label>
 
+        <div aria-live="polite">
         {searching && hits.length > 0 ? (
-          <ul className="mt-4" aria-live="polite">
+          <ul className="mt-4">
             {hits.map((hit) => (
               <li key={hit.dish.slug}>
                 <button
@@ -73,6 +74,7 @@ export function MenuSearch({
         {searching && hits.length === 0 ? (
           <p className="mt-6 text-[15px] text-ink">Nada encontrado para “{query.trim()}”</p>
         ) : null}
+        </div>
 
         {!searching || hits.length === 0 ? (
           <div className="mt-6">

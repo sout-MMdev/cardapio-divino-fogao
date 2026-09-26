@@ -11,6 +11,8 @@ export type UrlSheet =
 
 /** Quantos painéis este app empilhou no histórico. Com 0, fechar troca o endereço em vez de voltar (link direto). */
 let depth = 0;
+/** Fechamento em andamento (history.back() ainda sem popstate): evita voltar duas vezes num toque duplo. */
+let closing: Promise<void> | null = null;
 let listening = false;
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((listener) => listener());
@@ -73,11 +75,20 @@ export function updateSheetValue(key: "busca", value: string): void {
 /** Fecha o painel: volta no histórico se foi aberto aqui; senão troca o endereço (link direto não sai do site). */
 export function closeSheet(): Promise<void> {
   ensureListening();
+  if (closing) return closing;
   if (depth > 0) {
-    return new Promise((resolve) => {
-      window.addEventListener("popstate", () => resolve(), { once: true });
+    closing = new Promise((resolve) => {
+      window.addEventListener(
+        "popstate",
+        () => {
+          closing = null;
+          resolve();
+        },
+        { once: true },
+      );
       window.history.back();
     });
+    return closing;
   }
   window.history.replaceState(null, "", window.location.pathname);
   emit();

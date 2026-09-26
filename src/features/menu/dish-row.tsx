@@ -19,7 +19,7 @@ export function DishRow({ dish, onOpen }: { dish: Dish; onOpen: (slug: string) =
           {dish.name}
         </span>
         {dish.description ? (
-          <span className="mt-0.5 line-clamp-2 block text-[13px] leading-snug text-ink-muted">
+          <span className="mt-0.5 line-clamp-2 text-[13px] leading-snug text-ink-muted">
             {dish.description}
           </span>
         ) : null}

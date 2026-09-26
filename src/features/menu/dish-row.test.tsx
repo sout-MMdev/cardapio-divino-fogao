@@ -16,6 +16,13 @@ describe("DishRow", () => {
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 
+  it("descrição longa fica em no máximo 2 linhas (line-clamp sem 'block' anulando)", () => {
+    render(<DishRow dish={makeDish({ description: "Descrição longa." })} onOpen={() => {}} />);
+    const desc = screen.getByText("Descrição longa.");
+    expect(desc).toHaveClass("line-clamp-2");
+    expect(desc).not.toHaveClass("block");
+  });
+
   it("marca esgotado sem esconder o prato", () => {
     render(<DishRow dish={makeDish({ isAvailable: false })} onOpen={() => {}} />);
     expect(screen.getByText("Esgotado hoje")).toBeInTheDocument();
@@ -37,6 +44,7 @@ describe("CompactRow", () => {
       />,
     );
     expect(screen.getByText("400 ml")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toHaveClass("min-h-11"); // alvo de toque ≥ 44 px
     expect(screen.getByText(/^R\$\s29,00$/)).toBeInTheDocument();
   });
 });

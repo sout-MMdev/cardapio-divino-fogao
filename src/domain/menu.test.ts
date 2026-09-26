@@ -62,4 +62,9 @@ describe("regras do cardápio", () => {
     expect(findDish(categories, "nao-existe")).toBeUndefined();
     expect(countDishes(categories)).toBe(2);
   });
+
+  it("featuredDishes não destaca prato esgotado", () => {
+    const esgotado = makeDish({ slug: "batatao", isFeatured: true, isAvailable: false });
+    expect(featuredDishes([makeCategory({ dishes: [esgotado] })])).toEqual([]);
+  });
 });

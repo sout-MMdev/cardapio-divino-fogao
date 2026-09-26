@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { closeSheet, openSheet, parseUrlSheet, updateSheetValue, useUrlSheet } from "./url-sheet";
 
 describe("parseUrlSheet", () => {
@@ -32,6 +32,17 @@ describe("abrir e fechar painéis", () => {
     expect(window.location.pathname).toBe("/");
     expect(window.location.search).toBe("");
     expect(window.history.length).toBe(before);
+  });
+
+  it("toque duplo no Fechar volta uma vez só (não sai do site)", async () => {
+    renderHook(() => useUrlSheet());
+    act(() => openSheet("prato", "batatao-divino"));
+    const back = vi.spyOn(window.history, "back");
+    await act(async () => {
+      await Promise.all([closeSheet(), closeSheet()]);
+    });
+    expect(back).toHaveBeenCalledTimes(1);
+    expect(window.location.search).toBe("");
   });
 
   it("atualizar a busca não cria entradas novas no histórico", () => {

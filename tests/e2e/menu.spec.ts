@@ -1,4 +1,8 @@
+import { existsSync } from "node:fs";
 import { expect, test } from "@playwright/test";
+
+/** Fotos de desenvolvimento são de terceiros e ficam fora do git (public/menu-photos). */
+const temFotosDeDev = existsSync("public/menu-photos/batatao.jpg");
 
 test("carrega o cardápio com topo, promoções e abas", async ({ page }) => {
   await page.goto("/");
@@ -8,6 +12,7 @@ test("carrega o cardápio com topo, promoções e abas", async ({ page }) => {
 });
 
 test("fotos dos destaques aparecem com altura real", async ({ page }) => {
+  test.skip(!temFotosDeDev, "fotos de desenvolvimento ausentes (public/menu-photos é ignorada pelo git)");
   await page.goto("/");
   const foto = page.locator("#secao-destaques img").first();
   await expect(foto).toBeVisible();

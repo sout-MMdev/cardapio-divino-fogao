@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { priceSummary, type Dish } from "@/domain/menu";
 import { formatAddon, formatBRL } from "@/domain/money";
 import { Chip, DishPhoto, DottedPriceRow, Sheet } from "@/ui";
@@ -12,19 +13,31 @@ type Props = {
   prepTimeMinutes: number;
 };
 
+/** O Sheet fica sempre montado: fechar chama dialog.close() e o foco volta para quem abriu. */
 export function DishSheet({ dish, open, onClose, prepTimeMinutes }: Props) {
-  if (!dish) return null;
+  return (
+    <Sheet open={open && Boolean(dish)} onClose={onClose} labelledBy="prato-titulo">
+      {dish ? <DishSheetBody key={dish.slug} dish={dish} prepTimeMinutes={prepTimeMinutes} /> : null}
+    </Sheet>
+  );
+}
+
+function DishSheetBody({ dish, prepTimeMinutes }: { dish: Dish; prepTimeMinutes: number }) {
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const hasPhoto = Boolean(dish.photo) && !photoFailed;
   const summary = priceSummary(dish);
   const muted = !dish.isAvailable;
   return (
-    <Sheet open={open} onClose={onClose} labelledBy="prato-titulo">
+    <>
       <DishPhoto
         photo={dish.photo}
         sizes="(max-width: 576px) 100vw, 576px"
         eager
+        onFail={() => setPhotoFailed(true)}
         className="h-[230px] w-full"
       />
-      <div className={`px-5 pb-10 ${dish.photo ? "pt-5" : "pt-12"}`}>
+      {/* sem foto, o conteúdo desce abaixo do botão Fechar (✕ ocupa 12–56 px do topo) */}
+      <div className={`px-5 pb-10 ${hasPhoto ? "pt-5" : "pt-16"}`}>
         <div className="mb-2 flex flex-wrap gap-1.5">
           {!dish.isAvailable ? <Chip tone="neutral">Esgotado hoje</Chip> : null}
           {dishBadges(dish).map((b) => (
@@ -74,6 +87,6 @@ export function DishSheet({ dish, open, onClose, prepTimeMinutes }: Props) {
           Tempo de preparo de aproximadamente {prepTimeMinutes} minutos.
         </p>
       </div>
-    </Sheet>
+    </>
   );
 }

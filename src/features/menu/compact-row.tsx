@@ -19,7 +19,7 @@ export function CompactRow({ dish, onOpen }: { dish: Dish; onOpen: (slug: string
     <button
       type="button"
       onClick={() => onOpen(dish.slug)}
-      className="block w-full border-b border-line/70 py-1 text-left"
+      className="block min-h-11 w-full border-b border-line/70 py-1 text-left"
     >
       {summary.kind === "variants" ? (
         <>

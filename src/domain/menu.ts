@@ -24,8 +24,9 @@ export function priceSummary(dish: Pick<Dish, "basePrice" | "variants">): PriceS
   return { kind: "on-request" };
 }
 
+/** Destaques: pratos marcados como destaque e disponíveis (esgotado não se promove). */
 export function featuredDishes(categories: Category[]): Dish[] {
-  return categories.flatMap((c) => c.dishes.filter((d) => d.isFeatured));
+  return categories.flatMap((c) => c.dishes.filter((d) => d.isFeatured && d.isAvailable));
 }
 
 export function findDish(

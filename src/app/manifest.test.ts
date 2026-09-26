@@ -13,4 +13,5 @@ it("manifest do PWA com as cores do tema A e ícones", () => {
     lang: "pt-BR",
   });
   expect(m.icons?.map((i) => i.sizes)).toEqual(["192x192", "512x512", "512x512"]);
+  expect(m.orientation).toBeUndefined(); // WCAG 1.3.4: não travar a orientação
 });

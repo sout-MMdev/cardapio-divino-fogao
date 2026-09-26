@@ -4,10 +4,17 @@ import Image from "next/image";
 import { useState } from "react";
 import type { Photo } from "@/domain/menu";
 
-type Props = { photo?: Photo; sizes: string; className?: string; eager?: boolean };
+type Props = {
+  photo?: Photo;
+  sizes: string;
+  className?: string;
+  eager?: boolean;
+  /** Avisa quem usa que a foto falhou (para ajustar o layout sem foto). */
+  onFail?: () => void;
+};
 
 /** Foto opcional: sem foto ou com erro, some e o layout sem foto assume. */
-export function DishPhoto({ photo, sizes, className = "", eager = false }: Props) {
+export function DishPhoto({ photo, sizes, className = "", eager = false, onFail }: Props) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   if (!photo || failed) return null;
@@ -21,7 +28,10 @@ export function DishPhoto({ photo, sizes, className = "", eager = false }: Props
         loading={eager ? "eager" : "lazy"}
         fetchPriority={eager ? "high" : "auto"}
         onLoad={() => setLoaded(true)}
-        onError={() => setFailed(true)}
+        onError={() => {
+          setFailed(true);
+          onFail?.();
+        }}
         // eager = acima da dobra: nasce visível para não atrasar o LCP até a hidratação
         className={`object-cover transition-opacity duration-500 motion-reduce:transition-none ${eager || loaded ? "opacity-100" : "opacity-0"}`}
       />

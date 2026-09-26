@@ -7,7 +7,6 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Cardápio digital do Divino Fogão – São Leopoldo",
     start_url: "/",
     display: "standalone",
-    orientation: "portrait",
     theme_color: "#6b1d22",
     background_color: "#f4eee4",
     lang: "pt-BR",
