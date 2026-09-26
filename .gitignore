@@ -32,3 +32,9 @@ public/menu-photos/*
 .vercel/
 .DS_Store
 Thumbs.db
+
+# template Next
+/build
+*.pem
+npm-debug.log*
+.playwright-mcp/

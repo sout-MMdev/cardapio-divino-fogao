@@ -1,0 +1,23 @@
+/* Tema A · Fazenda Contemporânea — tokens (contraste AA conferido sobre o creme) */
+@theme {
+  --color-bg: #f4eee4;
+  --color-surface: #fbf7f1;
+  --color-surface-muted: #efe6d8;
+  --color-line: #e3d8ca;
+  --color-line-strong: #c7b9aa;
+  --color-ink: #2b1b17;
+  --color-ink-muted: #6f5f55;
+  --color-brand: #6b1d22;
+  --color-brand-ink: #fbf7f1;
+  --color-accent: #855a2e;
+  --color-success: #2f6b45;
+  --color-success-soft: #e1eedf;
+  --radius-card: 16px;
+  --radius-sheet: 26px;
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-display-italic: var(--font-fraunces-italic), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-manrope), system-ui, -apple-system, "Segoe UI", sans-serif;
+}

@@ -36,7 +36,7 @@
 
 ---
 
-### Tarefa 1: base do projeto, ferramentas e `domain/money`
+### Task 1: base do projeto, ferramentas e `domain/money`
 
 **Arquivos:**
 - Criar: projeto Next (via create-next-app), `.gitattributes`, `.prettierrc.json`, `.prettierignore`, `.env.example`, `CLAUDE.md`, `vitest.config.mts`, `vitest.setup.ts`, `src/domain/money.ts`
@@ -293,7 +293,7 @@ git add -A && git commit -m "chore: base Next.js 16 + ferramentas (vitest, eslin
 
 ---
 
-### Tarefa 2: `domain/menu` (tipos, schema Zod e regras)
+### Task 2: `domain/menu` (tipos, schema Zod e regras)
 
 **Arquivos:**
 - Criar: `src/domain/menu.ts`, `src/test/fixtures.ts`
@@ -549,7 +549,7 @@ export function countDishes(categories: Category[]): number {
 
 ---
 
-### Tarefa 3: `domain/opening-hours` e `domain/search`
+### Task 3: `domain/opening-hours` e `domain/search`
 
 **Arquivos:**
 - Criar: `src/domain/opening-hours.ts`, `src/domain/search.ts`
@@ -858,7 +858,7 @@ export function weeklySchedule(hours: OpeningRange[]): DaySchedule[] {
 
 ---
 
-### Tarefa 4: dados iniciais (cardápio real) e fotos de desenvolvimento
+### Task 4: dados iniciais (cardápio real) e fotos de desenvolvimento
 
 **Arquivos:**
 - Criar: `src/data/seed/menu.ts`, `public/menu-photos/.gitkeep`
@@ -1138,7 +1138,7 @@ git check-ignore public/menu-photos/batatao.jpg   # deve imprimir o caminho (ign
 
 ---
 
-### Tarefa 5: `lib/env`, contrato do repositório e `SeedMenuRepository`
+### Task 5: `lib/env`, contrato do repositório e `SeedMenuRepository`
 
 **Arquivos:**
 - Criar: `src/lib/env.ts`, `src/data/menu-repository.ts`, `src/data/menu-repository.contract.ts`, `src/data/seed/seed-menu-repository.ts`
@@ -1275,7 +1275,7 @@ export class SeedMenuRepository implements MenuRepository {
 
 ---
 
-### Tarefa 6: Supabase preparado (migration, repositório, seed.sql e fábrica), sem aplicar nada
+### Task 6: Supabase preparado (migration, repositório, seed.sql e fábrica), sem aplicar nada
 
 **Arquivos:**
 - Criar:
@@ -1948,7 +1948,7 @@ export function getMenuRepository(env: Env = readEnv()): MenuRepository {
 
 ---
 
-### Tarefa 7: tokens do tema A, layout e peças de `ui/`
+### Task 7: tokens do tema A, layout e peças de `ui/`
 
 **Arquivos:**
 - Criar:
@@ -2429,7 +2429,7 @@ export default async function MenuPage() {
 
 ---
 
-### Tarefa 8: feature `restaurant` (topo, status aberto/fechado e informações)
+### Task 8: feature `restaurant` (topo, status aberto/fechado e informações)
 
 **Arquivos:**
 - Criar: `src/lib/use-now.ts`, `src/features/restaurant/open-status.tsx`, `src/features/restaurant/restaurant-header.tsx`, `src/features/restaurant/info-sheet.tsx`, `src/features/restaurant/json-ld.ts`, `src/features/restaurant/index.ts`
@@ -2741,7 +2741,7 @@ export { RestaurantHeader } from "./restaurant-header";
 
 ---
 
-### Tarefa 9: painéis no endereço da página (`lib/url-sheet`)
+### Task 9: painéis no endereço da página (`lib/url-sheet`)
 
 **Arquivos:**
 - Criar: `src/lib/url-sheet.ts`
@@ -2896,7 +2896,7 @@ export function closeSheet(): Promise<void> {
 
 ---
 
-### Tarefa 10: feature `menu` (linhas, seções, abas, detalhe e busca)
+### Task 10: feature `menu` (linhas, seções, abas, detalhe e busca)
 
 **Arquivos:**
 - Criar:
@@ -3521,7 +3521,7 @@ export { MenuSearch } from "./menu-search";
 
 ---
 
-### Tarefa 11: montagem da página (barra superior, promoções, painéis, rodapé e erros)
+### Task 11: montagem da página (barra superior, promoções, painéis, rodapé e erros)
 
 **Arquivos:**
 - Criar:
@@ -3804,7 +3804,7 @@ export default async function MenuPage() {
 
 ---
 
-### Tarefa 12: PWA (Serwist, manifest, ícones e offline) e testes de ponta a ponta
+### Task 12: PWA (Serwist, manifest, ícones e offline) e testes de ponta a ponta
 
 **Arquivos:**
 - Criar:
@@ -4174,7 +4174,7 @@ Esperado: tudo PASSA, nos 2 projetos do Playwright (iPhone 12 e Pixel 7).
 
 ---
 
-### Tarefa 13: CI, README e verificação final
+### Task 13: CI, README e verificação final
 
 **Arquivos:**
 - Criar: `.github/workflows/ci.yml`, `README.md`
